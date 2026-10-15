@@ -1,0 +1,16 @@
+{
+  "name": "odop-catalogue-maker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ODOP Catalogue Maker: frontend (plain HTML/CSS/JS) + backend (Node.js)",
+  "scripts": {
+    "setup": "npm --prefix backend install",
+    "predev": "node scripts/ensure-install.js",
+    "dev": "npm --prefix backend run dev",
+    "prestart": "node scripts/ensure-install.js",
+    "start": "npm --prefix backend run start",
+    "preseed": "node scripts/ensure-install.js",
+    "seed": "npm --prefix backend run seed",
+    "test": "npm --prefix backend test"
+  }
+}

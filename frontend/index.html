@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ODOP Catalogue Maker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@300;400;600;700&family=Noto+Serif+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="js/data/data.js"></script>
+<script src="js/demo/demo-photos.js"></script>
+<script src="js/demo/demo.js"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="hero">
+    <div class="logo">O</div>
+    <div>
+      <h1>ODOP Catalogue Maker</h1>
+      <div class="tag">One District One Product · Rajasthan</div>
+    </div>
+    <div class="acct" id="acct"></div>
+    <button class="demo" id="btnDemo" type="button">Fill demo data</button>
+  </div>
+</header>
+<main>
+
+<div id="errors"></div>
+
+<div class="layout">
+<div class="form-col">
+<section class="box" id="s1">
+  <h2><span>1</span><div>District &amp; Product<small>ज़िला और ODOP उत्पाद</small></div></h2>
+  <div class="row">
+    <div>
+      <label for="district">District <small>ज़िला</small></label>
+      <select id="district"></select>
+      <input type="text" id="districtOther" class="hidden" placeholder="Type district name" style="margin-top:6px">
+    </div>
+    <div>
+      <label for="product">ODOP Product <small>उत्पाद</small></label>
+      <select id="product"></select>
+      <input type="text" id="productOther" class="hidden" placeholder="Type product name" style="margin-top:6px">
+    </div>
+  </div>
+</section>
+
+<section class="box" id="s2">
+  <h2><span>2</span><div>Enterprise Details<small>उद्यम की जानकारी</small></div></h2>
+  <label for="entName">Enterprise name * <small>उद्यम का नाम</small></label>
+  <input type="text" id="entName">
+  <div class="row">
+    <div><label for="person">Contact person <small>संपर्क व्यक्ति</small></label><input type="text" id="person"></div>
+    <div><label for="mobile">Mobile number * <small>मोबाइल नंबर</small></label><input type="tel" id="mobile" inputmode="numeric" maxlength="10" placeholder="10 digits"></div>
+  </div>
+  <div class="row">
+    <div><label for="wa">WhatsApp Business number <small>व्हाट्सऐप नंबर</small></label><input type="tel" id="wa" inputmode="numeric" maxlength="10" placeholder="Leave empty to use mobile"></div>
+    <div><label for="email">Email (optional) <small>ईमेल</small></label><input type="email" id="email"></div>
+  </div>
+  <label for="addr">Address <small>पता</small></label>
+  <input type="text" id="addr">
+  <div class="row3">
+    <div><label for="udyam">Udyam number <small>उद्यम नंबर</small></label><input type="text" id="udyam" placeholder="UDYAM-RJ-17-0123456" maxlength="22"></div>
+    <div><label for="odopRef">ODOP reference / certificate no.</label><input type="text" id="odopRef" maxlength="40"></div>
+    <div><label for="batchNo">Batch no.</label><input type="text" id="batchNo" maxlength="20"></div>
+  </div>
+  <div class="warn hidden" id="dupWarn"></div>
+  <div class="row">
+    <div><label for="gst">GSTIN (optional) <small>जीएसटी नंबर</small></label><input type="text" id="gst" maxlength="15" placeholder="e.g. 08ABCDE1234F1Z5"></div>
+    <div><label for="logoFile">Company logo (optional) <small>लोगो</small></label><input type="file" id="logoFile" accept="image/*"><div class="hint" id="logoHint">If no logo is added, the company initials are shown.</div></div>
+  </div>
+  <label for="desc">Product description <small>उत्पाद का विवरण</small></label>
+  <textarea id="desc" placeholder="2-3 lines about the product. Keep it accurate; do not exaggerate."></textarea>
+  <label for="use">Use / application <small>उपयोग</small></label>
+  <input type="text" id="use" placeholder="e.g. Home decor, gifting, kitchen">
+</section>
+
+<section class="box" id="s3">
+  <h2><span>3</span><div>New Business Account &amp; QR<small>नया अकाउंट और QR</small></div></h2>
+  <div class="row">
+    <div>
+      <label for="platform">Platform *</label>
+      <select id="platform">
+        <option value="wa">WhatsApp Business</option>
+        <option value="fb">Facebook Business Page</option>
+        <option value="ig">Instagram Business</option>
+      </select>
+    </div>
+    <div>
+      <label for="accLink">Account live link * <small>अकाउंट का लिंक</small></label>
+      <input type="url" id="accLink" placeholder="https://...">
+    </div>
+  </div>
+  <div class="hint" id="waHint"></div>
+  <label for="locLink">Location link (Google Maps, optional) <small>नक्शे का लिंक</small></label>
+  <input type="url" id="locLink" placeholder="https://maps.google.com/...">
+  <h3 class="subhead">More social links (optional) <small>और सोशल मीडिया लिंक</small></h3>
+  <div class="row">
+    <div><label for="socIg">Instagram</label><input type="url" id="socIg" placeholder="https://instagram.com/yourpage"></div>
+    <div><label for="socFb">Facebook</label><input type="url" id="socFb" placeholder="https://facebook.com/yourpage"></div>
+  </div>
+  <div class="row">
+    <div><label for="socYt">YouTube</label><input type="url" id="socYt" placeholder="https://youtube.com/@yourchannel"></div>
+    <div><label for="socWeb">Website</label><input type="url" id="socWeb" placeholder="https://www.yoursite.com"></div>
+  </div>
+  <div class="hint">Every link you add here gets its own QR code on the last page of the catalogue (and is clickable in the PDF).</div>
+  <div class="warn">The QR must open this <b>new</b> account/page/profile directly. Scan it with a phone after making the PDF. <small>QR सीधे नए account को खोलना चाहिए।</small></div>
+</section>
+
+<section class="box" id="s4">
+  <h2><span>4</span><div>Product Photos / Variants<small>उत्पाद की फ़ोटो</small></div></h2>
+  <p class="sub">At least 5 different designs or variants of the same ODOP product. <small>कम से कम 5 अलग design</small></p>
+  <div class="hint">You can delete a variant with the Delete button. At least 5 are needed for the final catalogue. Use real photos only. For each photo, say how it differs from the others (name, size, colour, material). Identical photos count once.</div>
+  <div id="variants"></div>
+  <div class="actions">
+    <button class="btn2" id="addVar">+ Add another variant</button>
+  </div>
+  <div class="chk confirm"><input type="checkbox" id="realPhoto"><label for="realPhoto"> I confirm all photos are of the real product (not AI-generated images). * <small>सभी फ़ोटो असली उत्पाद की हैं।</small></label></div>
+</section>
+
+<section class="box" id="s5">
+  <h2><span>5</span><div>Template &amp; Colour<small>टेम्पलेट और रंग</small></div></h2>
+  <div class="hint" id="tplInfo"></div>
+  <div class="chk" style="margin-top:10px"><input type="checkbox" id="tplSurprise"><label for="tplSurprise" style="margin:0;font-weight:500">Surprise me: use a different template for every download <small>हर बार नया टेम्पलेट</small></label></div>
+  <div class="tgrid" id="tplGrid"></div>
+  <h3 class="subhead">Colour <small>changes the colours of every design · choose "Original" to keep the design's own colours</small></h3>
+  <div class="swatches" id="swatches"></div>
+  <div class="colorrow">
+    <label for="colorPick">Custom colour <small>अपना रंग</small></label><input type="color" id="colorPick" value="#1d6fb8">
+  </div>
+</section>
+
+<section class="box" id="s7">
+  <h2><span>+</span><div>Catalogue text (optional)<small>कैटलॉग का टेक्स्ट</small></div></h2>
+  <div class="hint">The words in your catalogue (headlines, why choose us, uses) are written for your product and change with your company name. Change anything below to make it your own.</div>
+  <details class="txbox" open>
+    <summary>Edit text</summary>
+    <label for="txTagline">Tagline <small>एक लाइन</small></label>
+    <input type="text" id="txTagline" placeholder="One short line about your business">
+    <label for="txWhy">Why choose us (one per line) <small>हमें क्यों चुनें</small></label>
+    <textarea id="txWhy" rows="6"></textarea>
+    <label for="txApps">Uses / applications (one per line) <small>उपयोग</small></label>
+    <textarea id="txApps" rows="5"></textarea>
+    <label for="txValues">Our promises (3 lines, "Title: text") <small>हमारे वादे</small></label>
+    <textarea id="txValues" rows="4"></textarea>
+    <div class="actions"><button class="btn2" id="txReset" type="button">Reset to suggested text</button></div>
+  </details>
+</section>
+
+
+</div>
+<aside class="preview-col" id="s6">
+  <div class="box pv">
+    <h2><span>6</span><div>Preview &amp; Download<small>PDF तैयार करें</small></div></h2>
+    <div class="hint">Choose a template in step 5. The number of pages follows your products. <small>पेज प्रोडक्ट के हिसाब से।</small></div>
+    <div class="actions">
+      <button class="btn2" id="btnPreview">👁 Refresh preview</button>
+      <button class="btn" id="btnDownload">⬇ Download PDF</button>
+    </div>
+    <div id="pageInfo" class="hint" style="font-weight:600"></div>
+    <div class="savebox hidden" id="saveBox">
+      <button class="btn2" id="btnSave" type="button">Save to server</button>
+      <label class="chk2"><input type="checkbox" id="savePdf" checked> Also save the PDF on the server when I download it</label>
+      <div class="hint" id="saveInfo"></div>
+    </div>
+    <div id="status" class="hint"></div>
+    <div id="previewEmpty" class="empty">Your catalogue preview will appear here.<br><small>Fill the form, or press "Fill demo data", then tap Preview.</small></div>
+    <div id="previewWrap" class="hidden"><div id="previewScaler"><div id="previewHost"></div></div></div>
+    <div id="qrTest" class="hint hidden"></div>
+  </div>
+</aside>
+</div>
+
+
+
+
+</main>
+<div class="modal hidden" id="modal"><div class="mbox" id="modalBox"><button class="mx" id="modalClose" type="button" aria-label="Close">&times;</button><div id="modalBody"></div></div></div>
+<div class="toast hidden" id="toast"></div>
+<footer class="foot-app"><b>ODOP Catalogue Maker</b> · One District One Product, Rajasthan<br>Enter accurate details and use real product photos only.</footer>
+<div id="offscreen" style="position:fixed;left:-10000px;top:0"></div>
+
+<script src="js/content/content.js"></script>
+<script src="js/templates/templates.js"></script>
+<script src="js/templates/editorial.js"></script>
+<script src="js/templates/kotastone.js"></script>
+<script src="js/templates/stonecatalogs.js"></script>
+<script src="js/app.js"></script>
+<script src="js/colour.js"></script>
+<script src="js/templates-ui.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/tabs.js"></script>
+</body>
+</html>
